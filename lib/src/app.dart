@@ -1,6 +1,5 @@
 import 'package:flouter/flouter.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:landmarks/src/models/landmark.dart';
 import 'package:landmarks/src/views/landmark_detail.dart';
 import 'package:landmarks/src/views/landmarks.dart';

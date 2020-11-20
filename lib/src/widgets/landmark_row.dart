@@ -20,11 +20,6 @@ class LandmarkRow extends StatelessWidget {
           padding: const EdgeInsets.only(left: 8),
           child: Text(landmark.name),
         ),
-        Spacer(),
-        Icon(
-          CupertinoIcons.forward,
-          color: CupertinoColors.systemGrey2,
-        )
       ],
     );
   }
