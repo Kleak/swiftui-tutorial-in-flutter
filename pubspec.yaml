@@ -1,0 +1,30 @@
+name: landmarks
+description: A new Flutter project.
+
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.0
+  flouter: ^0.1.1
+  freezed_annotation: ^0.12.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  freezed: ^0.12.2
+  json_serializable: ^3.5.0
+  build_runner: ^1.10.6
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/
