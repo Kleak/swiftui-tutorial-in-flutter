@@ -182,7 +182,8 @@ class _$LandmarkTearOff {
       @required Coordinates coordinates,
       @required String state,
       @required String park,
-      @required Category category}) {
+      @required Category category,
+      bool isFavorite = false}) {
     return _Landmark(
       id: id,
       name: name,
@@ -191,6 +192,7 @@ class _$LandmarkTearOff {
       state: state,
       park: park,
       category: category,
+      isFavorite: isFavorite,
     );
   }
 
@@ -213,6 +215,7 @@ mixin _$Landmark {
   String get state;
   String get park;
   Category get category;
+  bool get isFavorite;
 
   Map<String, dynamic> toJson();
   $LandmarkCopyWith<Landmark> get copyWith;
@@ -229,7 +232,8 @@ abstract class $LandmarkCopyWith<$Res> {
       Coordinates coordinates,
       String state,
       String park,
-      Category category});
+      Category category,
+      bool isFavorite});
 
   $CoordinatesCopyWith<$Res> get coordinates;
 }
@@ -251,6 +255,7 @@ class _$LandmarkCopyWithImpl<$Res> implements $LandmarkCopyWith<$Res> {
     Object state = freezed,
     Object park = freezed,
     Object category = freezed,
+    Object isFavorite = freezed,
   }) {
     return _then(_value.copyWith(
       id: id == freezed ? _value.id : id as int,
@@ -262,6 +267,8 @@ class _$LandmarkCopyWithImpl<$Res> implements $LandmarkCopyWith<$Res> {
       state: state == freezed ? _value.state : state as String,
       park: park == freezed ? _value.park : park as String,
       category: category == freezed ? _value.category : category as Category,
+      isFavorite:
+          isFavorite == freezed ? _value.isFavorite : isFavorite as bool,
     ));
   }
 
@@ -288,7 +295,8 @@ abstract class _$LandmarkCopyWith<$Res> implements $LandmarkCopyWith<$Res> {
       Coordinates coordinates,
       String state,
       String park,
-      Category category});
+      Category category,
+      bool isFavorite});
 
   @override
   $CoordinatesCopyWith<$Res> get coordinates;
@@ -312,6 +320,7 @@ class __$LandmarkCopyWithImpl<$Res> extends _$LandmarkCopyWithImpl<$Res>
     Object state = freezed,
     Object park = freezed,
     Object category = freezed,
+    Object isFavorite = freezed,
   }) {
     return _then(_Landmark(
       id: id == freezed ? _value.id : id as int,
@@ -323,6 +332,8 @@ class __$LandmarkCopyWithImpl<$Res> extends _$LandmarkCopyWithImpl<$Res>
       state: state == freezed ? _value.state : state as String,
       park: park == freezed ? _value.park : park as String,
       category: category == freezed ? _value.category : category as Category,
+      isFavorite:
+          isFavorite == freezed ? _value.isFavorite : isFavorite as bool,
     ));
   }
 }
@@ -338,14 +349,16 @@ class _$_Landmark implements _Landmark {
       @required this.coordinates,
       @required this.state,
       @required this.park,
-      @required this.category})
+      @required this.category,
+      this.isFavorite = false})
       : assert(id != null),
         assert(name != null),
         assert(imageName != null),
         assert(coordinates != null),
         assert(state != null),
         assert(park != null),
-        assert(category != null);
+        assert(category != null),
+        assert(isFavorite != null);
 
   factory _$_Landmark.fromJson(Map<String, dynamic> json) =>
       _$_$_LandmarkFromJson(json);
@@ -364,10 +377,13 @@ class _$_Landmark implements _Landmark {
   final String park;
   @override
   final Category category;
+  @JsonKey(defaultValue: false)
+  @override
+  final bool isFavorite;
 
   @override
   String toString() {
-    return 'Landmark(id: $id, name: $name, imageName: $imageName, coordinates: $coordinates, state: $state, park: $park, category: $category)';
+    return 'Landmark(id: $id, name: $name, imageName: $imageName, coordinates: $coordinates, state: $state, park: $park, category: $category, isFavorite: $isFavorite)';
   }
 
   @override
@@ -390,7 +406,10 @@ class _$_Landmark implements _Landmark {
                 const DeepCollectionEquality().equals(other.park, park)) &&
             (identical(other.category, category) ||
                 const DeepCollectionEquality()
-                    .equals(other.category, category)));
+                    .equals(other.category, category)) &&
+            (identical(other.isFavorite, isFavorite) ||
+                const DeepCollectionEquality()
+                    .equals(other.isFavorite, isFavorite)));
   }
 
   @override
@@ -402,7 +421,8 @@ class _$_Landmark implements _Landmark {
       const DeepCollectionEquality().hash(coordinates) ^
       const DeepCollectionEquality().hash(state) ^
       const DeepCollectionEquality().hash(park) ^
-      const DeepCollectionEquality().hash(category);
+      const DeepCollectionEquality().hash(category) ^
+      const DeepCollectionEquality().hash(isFavorite);
 
   @override
   _$LandmarkCopyWith<_Landmark> get copyWith =>
@@ -422,7 +442,8 @@ abstract class _Landmark implements Landmark {
       @required Coordinates coordinates,
       @required String state,
       @required String park,
-      @required Category category}) = _$_Landmark;
+      @required Category category,
+      bool isFavorite}) = _$_Landmark;
 
   factory _Landmark.fromJson(Map<String, dynamic> json) = _$_Landmark.fromJson;
 
@@ -440,6 +461,8 @@ abstract class _Landmark implements Landmark {
   String get park;
   @override
   Category get category;
+  @override
+  bool get isFavorite;
   @override
   _$LandmarkCopyWith<_Landmark> get copyWith;
 }

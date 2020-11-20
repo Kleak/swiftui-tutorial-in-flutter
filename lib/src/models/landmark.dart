@@ -12,7 +12,8 @@ final landmarks = [
     "id": 1001,
     "park": "Joshua Tree National Park",
     "coordinates": {"longitude": -116.166868, "latitude": 34.011286},
-    "imageName": "turtlerock"
+    "imageName": "turtlerock",
+    "isFavorite": true,
   },
   {
     "name": "Silver Salmon Creek",
@@ -32,7 +33,8 @@ final landmarks = [
     "id": 1003,
     "park": "Klondike Gold Rush National Historical Park",
     "coordinates": {"longitude": -135.334571, "latitude": 59.560551},
-    "imageName": "chilkoottrail"
+    "imageName": "chilkoottrail",
+    "isFavorite": true
   },
   {
     "name": "St. Mary Lake",
@@ -42,7 +44,8 @@ final landmarks = [
     "id": 1004,
     "park": "Glacier National Park",
     "coordinates": {"longitude": -113.536248, "latitude": 48.69423},
-    "imageName": "stmarylake"
+    "imageName": "stmarylake",
+    "isFavorite": true,
   },
   {
     "name": "Twin Lake",
@@ -145,6 +148,7 @@ abstract class Landmark with _$Landmark {
     @required String state,
     @required String park,
     @required Category category,
+    @Default(false) bool isFavorite,
   }) = _Landmark;
 
   factory Landmark.fromJson(Map<String, dynamic> json) => _$LandmarkFromJson(json);

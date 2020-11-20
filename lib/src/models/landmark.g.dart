@@ -30,6 +30,7 @@ _$_Landmark _$_$_LandmarkFromJson(Map<String, dynamic> json) {
     state: json['state'] as String,
     park: json['park'] as String,
     category: _$enumDecodeNullable(_$CategoryEnumMap, json['category']),
+    isFavorite: json['isFavorite'] as bool ?? false,
   );
 }
 
@@ -42,6 +43,7 @@ Map<String, dynamic> _$_$_LandmarkToJson(_$_Landmark instance) =>
       'state': instance.state,
       'park': instance.park,
       'category': _$CategoryEnumMap[instance.category],
+      'isFavorite': instance.isFavorite,
     };
 
 T _$enumDecode<T>(
