@@ -11,31 +11,36 @@ class LandmarkDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      child: Column(
-        children: [
-          SizedBox(
-            height: 300,
-            child: Placeholder(),
-          ),
-          Transform.translate(
-            offset: Offset(0, -150),
-            child: Column(
-              children: [
-                SizedBox(
-                  width: 300,
-                  height: 300,
-                  child: CircleImage(
-                    imageName: landmark.imageName,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 8),
-                  child: LandmarkInformation(landmark: landmark),
-                ),
-              ],
+      navigationBar: CupertinoNavigationBar(
+        backgroundColor: Color(0x00000000),
+      ),
+      child: SafeArea(
+        child: Column(
+          children: [
+            SizedBox(
+              height: 300,
+              child: Placeholder(),
             ),
-          ),
-        ],
+            Transform.translate(
+              offset: Offset(0, -150),
+              child: Column(
+                children: [
+                  SizedBox(
+                    width: 300,
+                    height: 300,
+                    child: CircleImage(
+                      imageName: landmark.imageName,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8),
+                    child: LandmarkInformation(landmark: landmark),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

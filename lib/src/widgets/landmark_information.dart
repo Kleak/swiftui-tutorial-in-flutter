@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:landmarks/src/bloc/landmarks.dart';
 import 'package:landmarks/src/models/landmark.dart';
 
 class LandmarkInformation extends StatelessWidget {
@@ -15,9 +17,25 @@ class LandmarkInformation extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            landmark.name,
-            style: CupertinoTheme.of(context).textTheme.textStyle,
+          Row(
+            children: [
+              Text(
+                landmark.name,
+                style: CupertinoTheme.of(context).textTheme.textStyle.copyWith(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 8),
+                child: GestureDetector(
+                  child: Icon(landmark.isFavorite ? CupertinoIcons.star_fill : CupertinoIcons.star),
+                  onTap: () {
+                    context.read<LandmarksBloc>().add(LandmarkEvent.toggleFavorite(landmark));
+                  },
+                ),
+              ),
+            ],
           ),
           Row(
             children: [

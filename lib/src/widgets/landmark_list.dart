@@ -1,6 +1,11 @@
+import 'dart:async';
+
 import 'package:flouter/flouter.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:landmarks/src/bloc/landmarks.dart';
 import 'package:landmarks/src/models/landmark.dart';
 import 'package:landmarks/src/widgets/landmark_row.dart';
 import 'package:landmarks/src/widgets/navigation_link.dart';
@@ -12,9 +17,29 @@ class LandmarkList extends StatefulWidget {
 
 class _LandmarkListState extends State<LandmarkList> {
   final animatedListKey = GlobalKey<SliverAnimatedListState>();
+  StreamSubscription<Landmark> onNewFavoriteSubscription;
+  StreamSubscription<Landmark> onRemoveFavoriteSubscription;
 
   bool showOnlyFavorite = false;
-  List<Landmark> currentShowingLandmark = [...landmarks];
+  List<Landmark> currentShowingLandmark;
+
+  @override
+  void initState() {
+    super.initState();
+
+    currentShowingLandmark = [...context.read<LandmarksBloc>().state];
+
+    onNewFavoriteSubscription = context.read<LandmarksBloc>().onNewFavorite.listen(addLandmark);
+    onRemoveFavoriteSubscription =
+        context.read<LandmarksBloc>().onRemoveFavorite.where((event) => showOnlyFavorite).listen(removeLandmark);
+  }
+
+  @override
+  void dispose() {
+    onNewFavoriteSubscription.cancel();
+    onRemoveFavoriteSubscription.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,22 +60,17 @@ class _LandmarkListState extends State<LandmarkList> {
                     setState(() {
                       showOnlyFavorite = newValue;
                     });
+
+                    final landmarks = context.read<LandmarksBloc>().state;
                     if (showOnlyFavorite) {
                       final notFavoriteLandmarks = landmarks.where((element) => !element.isFavorite).toList();
                       for (final landmark in notFavoriteLandmarks) {
-                        final index = currentShowingLandmark.indexOf(landmark);
-                        final removedLandmark = currentShowingLandmark.removeAt(index);
-                        animatedListKey.currentState.removeItem(
-                          index,
-                          (context, animation) => LandmarkItem(landmark: removedLandmark, animation: animation),
-                        );
+                        removeLandmark(landmark);
                       }
                     } else {
                       final notFavoriteLandmarks = landmarks.where((element) => !element.isFavorite).toList();
-                      notFavoriteLandmarks.forEach((element) {
-                        final index = landmarks.indexOf(element);
-                        currentShowingLandmark.insert(index, element);
-                        animatedListKey.currentState.insertItem(index);
+                      notFavoriteLandmarks.forEach((landmark) {
+                        addLandmark(landmark);
                       });
                     }
                   },
@@ -70,6 +90,28 @@ class _LandmarkListState extends State<LandmarkList> {
           initialItemCount: currentShowingLandmark.length,
         ),
       ],
+    );
+  }
+
+  void addLandmark(Landmark landmark) {
+    if (currentShowingLandmark.indexWhere((element) => element.id == landmark.id) != -1) {
+      return;
+    }
+    final landmarks = context.read<LandmarksBloc>().state;
+    final index = landmarks.indexWhere((element) => element.id == landmark.id);
+    currentShowingLandmark.insert(index, landmark);
+    animatedListKey.currentState.insertItem(index);
+  }
+
+  void removeLandmark(Landmark landmark) {
+    if (currentShowingLandmark.indexWhere((element) => element.id == landmark.id) == -1) {
+      return;
+    }
+    final index = currentShowingLandmark.indexWhere((element) => element.id == landmark.id);
+    final removedLandmark = currentShowingLandmark.removeAt(index);
+    animatedListKey.currentState.removeItem(
+      index,
+      (context, animation) => LandmarkItem(landmark: removedLandmark, animation: animation),
     );
   }
 }

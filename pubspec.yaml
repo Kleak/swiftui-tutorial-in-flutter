@@ -15,6 +15,8 @@ dependencies:
   cupertino_icons: ^1.0.0
   flouter: ^0.1.1
   freezed_annotation: ^0.12.0
+  bloc: ^6.1.0
+  flutter_bloc: ^6.1.1
 
 dev_dependencies:
   flutter_test:
