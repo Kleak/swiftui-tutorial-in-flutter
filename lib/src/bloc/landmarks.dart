@@ -9,21 +9,18 @@ part 'landmarks.freezed.dart';
 
 @freezed
 abstract class LandmarkEvent with _$LandmarkEvent {
-  factory LandmarkEvent.toggleFavorite(Landmark landmark) = ToggleFavoriteLandmarkEvent;
+  const factory LandmarkEvent.toggleFavorite(Landmark landmark) = ToggleFavoriteLandmarkEvent;
 }
 
 class LandmarksBloc extends Bloc<LandmarkEvent, List<Landmark>> {
-  final _onNewFavorite = StreamController<Landmark>();
   final _onRemoveFavorite = StreamController<Landmark>();
 
   LandmarksBloc() : super([...landmarks]);
 
-  Stream<Landmark> get onNewFavorite => _onNewFavorite.stream;
   Stream<Landmark> get onRemoveFavorite => _onRemoveFavorite.stream;
 
   @override
   Future<void> close() async {
-    await _onNewFavorite.close();
     await _onRemoveFavorite.close();
     return super.close();
   }
@@ -37,8 +34,6 @@ class LandmarksBloc extends Bloc<LandmarkEvent, List<Landmark>> {
       ];
       if (event.landmark.isFavorite) {
         _onRemoveFavorite.add(event.landmark);
-      } else {
-        _onNewFavorite.add(event.landmark.copyWith(isFavorite: !event.landmark.isFavorite));
       }
     }
   }

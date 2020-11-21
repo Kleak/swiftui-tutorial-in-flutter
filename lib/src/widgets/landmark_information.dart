@@ -29,7 +29,13 @@ class LandmarkInformation extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 8),
                 child: GestureDetector(
-                  child: Icon(landmark.isFavorite ? CupertinoIcons.star_fill : CupertinoIcons.star),
+                  child: Builder(
+                    builder: (context) {
+                      final _landmark = context.select(
+                          (LandmarksBloc value) => value.state.firstWhere((element) => element.id == landmark.id));
+                      return Icon(_landmark.isFavorite ? CupertinoIcons.star_fill : CupertinoIcons.star);
+                    },
+                  ),
                   onTap: () {
                     context.read<LandmarksBloc>().add(LandmarkEvent.toggleFavorite(landmark));
                   },

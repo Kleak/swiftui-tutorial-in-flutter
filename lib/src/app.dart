@@ -1,7 +1,9 @@
 import 'package:flouter/flouter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:landmarks/src/bloc/filtered_landmarks.dart';
 import 'package:landmarks/src/bloc/landmarks.dart';
+import 'package:landmarks/src/data/landmarks.dart';
 import 'package:landmarks/src/views/landmark_detail.dart';
 import 'package:landmarks/src/views/landmarks.dart';
 
@@ -14,25 +16,20 @@ class _LandmarksAppState extends State<LandmarksApp> {
   final routerDelegate = UriRouterDelegate(
     routes: {
       RegExp(r'^/$'): (_) => CupertinoPage(title: 'Landmarks', child: Landmarks()),
-      RegExp(r'^/landmark/([0-9]+)$'): (routeInformation) => CupertinoPage(
-            child: Builder(
-              builder: (context) {
-                final landmarks = context.watch<LandmarksBloc>().state;
-                return LandmarkDetail(
-                  landmark: landmarks.firstWhere(
-                    (element) => element.id == int.tryParse(routeInformation.match.group(1)),
-                  ),
-                );
-              },
-            ),
-          ),
+      RegExp(r'^/landmark/([0-9]+)$'): (routeInformation) =>
+          CupertinoPage(child: LandmarkDetail(id: int.tryParse(routeInformation.match.group(1)))),
     },
   );
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => LandmarksBloc(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<LandmarksBloc>(
+          create: (context) => LandmarksBloc(),
+        ),
+        BlocProvider(create: (context) => FilteredLandmarksBloc(context.read<LandmarksBloc>())),
+      ],
       child: CupertinoApp.router(
         title: 'Landmarks',
         theme: CupertinoThemeData(

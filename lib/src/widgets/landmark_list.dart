@@ -5,38 +5,63 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:landmarks/src/bloc/filtered_landmarks.dart';
 import 'package:landmarks/src/bloc/landmarks.dart';
+import 'package:landmarks/src/data/landmarks.dart';
 import 'package:landmarks/src/models/landmark.dart';
 import 'package:landmarks/src/widgets/landmark_row.dart';
 import 'package:landmarks/src/widgets/navigation_link.dart';
 
 class LandmarkList extends StatefulWidget {
+  final List<Landmark> landmarks;
+
+  const LandmarkList({Key key, @required this.landmarks}) : super(key: key);
+
   @override
   _LandmarkListState createState() => _LandmarkListState();
 }
 
 class _LandmarkListState extends State<LandmarkList> {
   final animatedListKey = GlobalKey<SliverAnimatedListState>();
-  StreamSubscription<Landmark> onNewFavoriteSubscription;
-  StreamSubscription<Landmark> onRemoveFavoriteSubscription;
 
+  StreamSubscription<Landmark> onRemoveFavoriteSubscription;
   bool showOnlyFavorite = false;
-  List<Landmark> currentShowingLandmark;
 
   @override
   void initState() {
     super.initState();
+    onRemoveFavoriteSubscription = context
+        .read<FilteredLandmarksBloc>()
+        .onRemoveFavorite
+        .where((event) => showOnlyFavorite)
+        .listen(removeLandmark);
+  }
 
-    currentShowingLandmark = [...context.read<LandmarksBloc>().state];
+  @override
+  void didUpdateWidget(covariant LandmarkList oldWidget) {
+    super.didUpdateWidget(oldWidget);
 
-    onNewFavoriteSubscription = context.read<LandmarksBloc>().onNewFavorite.listen(addLandmark);
-    onRemoveFavoriteSubscription =
-        context.read<LandmarksBloc>().onRemoveFavorite.where((event) => showOnlyFavorite).listen(removeLandmark);
+    if (widget.landmarks.length < oldWidget.landmarks.length) {
+      final oldLandmarks = [...oldWidget.landmarks];
+      final removedLandmarks = oldWidget.landmarks.where((element) => !widget.landmarks.contains(element));
+      removedLandmarks.forEach((element) {
+        final index = oldLandmarks.indexOf(element);
+        final removedLandmark = oldLandmarks.removeAt(index);
+        animatedListKey.currentState
+            .removeItem(index, (context, animation) => LandmarkItem(landmark: removedLandmark, animation: animation));
+      });
+    } else if (widget.landmarks.length > oldWidget.landmarks.length) {
+      final landmarks = [...widget.landmarks];
+      final addedLandmarks = widget.landmarks.where((element) => !oldWidget.landmarks.contains(element));
+      addedLandmarks.forEach((element) {
+        final index = landmarks.indexOf(element);
+        animatedListKey.currentState.insertItem(index);
+      });
+    }
   }
 
   @override
   void dispose() {
-    onNewFavoriteSubscription.cancel();
     onRemoveFavoriteSubscription.cancel();
     super.dispose();
   }
@@ -61,12 +86,11 @@ class _LandmarkListState extends State<LandmarkList> {
                       showOnlyFavorite = newValue;
                     });
 
-                    final landmarks = context.read<LandmarksBloc>().state;
-                    final notFavoriteLandmarks = landmarks.where((element) => !element.isFavorite).toList();
                     if (showOnlyFavorite) {
+                      final notFavoriteLandmarks = widget.landmarks.where((element) => !element.isFavorite).toList();
                       notFavoriteLandmarks.forEach(removeLandmark);
                     } else {
-                      notFavoriteLandmarks.forEach(addLandmark);
+                      context.read<FilteredLandmarksBloc>().add(FilteredLandmarksEvent.reset());
                     }
                   },
                 ),
@@ -78,36 +102,22 @@ class _LandmarkListState extends State<LandmarkList> {
           key: animatedListKey,
           itemBuilder: (context, index, animation) {
             return LandmarkItem(
-              landmark: currentShowingLandmark[index],
+              landmark: widget.landmarks[index],
               animation: animation,
             );
           },
-          initialItemCount: currentShowingLandmark.length,
+          initialItemCount: widget.landmarks.length,
         ),
       ],
     );
   }
 
   void addLandmark(Landmark landmark) {
-    if (currentShowingLandmark.indexWhere((element) => element.id == landmark.id) != -1) {
-      return;
-    }
-    final landmarks = context.read<LandmarksBloc>().state;
-    final index = landmarks.indexWhere((element) => element.id == landmark.id);
-    currentShowingLandmark.insert(index, landmark);
-    animatedListKey.currentState.insertItem(index);
+    context.read<FilteredLandmarksBloc>().add(FilteredLandmarksEvent.add(landmark));
   }
 
   void removeLandmark(Landmark landmark) {
-    if (currentShowingLandmark.indexWhere((element) => element.id == landmark.id) == -1) {
-      return;
-    }
-    final index = currentShowingLandmark.indexWhere((element) => element.id == landmark.id);
-    final removedLandmark = currentShowingLandmark.removeAt(index);
-    animatedListKey.currentState.removeItem(
-      index,
-      (context, animation) => LandmarkItem(landmark: removedLandmark, animation: animation),
-    );
+    context.read<FilteredLandmarksBloc>().add(FilteredLandmarksEvent.remove(landmark));
   }
 }
 

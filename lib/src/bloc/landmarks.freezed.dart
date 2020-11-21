@@ -128,7 +128,7 @@ class _$ToggleFavoriteLandmarkEventCopyWithImpl<$Res>
 
 /// @nodoc
 class _$ToggleFavoriteLandmarkEvent implements ToggleFavoriteLandmarkEvent {
-  _$ToggleFavoriteLandmarkEvent(this.landmark) : assert(landmark != null);
+  const _$ToggleFavoriteLandmarkEvent(this.landmark) : assert(landmark != null);
 
   @override
   final Landmark landmark;
@@ -202,7 +202,7 @@ class _$ToggleFavoriteLandmarkEvent implements ToggleFavoriteLandmarkEvent {
 }
 
 abstract class ToggleFavoriteLandmarkEvent implements LandmarkEvent {
-  factory ToggleFavoriteLandmarkEvent(Landmark landmark) =
+  const factory ToggleFavoriteLandmarkEvent(Landmark landmark) =
       _$ToggleFavoriteLandmarkEvent;
 
   @override
