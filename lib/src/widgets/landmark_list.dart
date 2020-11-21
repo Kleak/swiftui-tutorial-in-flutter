@@ -62,16 +62,11 @@ class _LandmarkListState extends State<LandmarkList> {
                     });
 
                     final landmarks = context.read<LandmarksBloc>().state;
+                    final notFavoriteLandmarks = landmarks.where((element) => !element.isFavorite).toList();
                     if (showOnlyFavorite) {
-                      final notFavoriteLandmarks = landmarks.where((element) => !element.isFavorite).toList();
-                      for (final landmark in notFavoriteLandmarks) {
-                        removeLandmark(landmark);
-                      }
+                      notFavoriteLandmarks.forEach(removeLandmark);
                     } else {
-                      final notFavoriteLandmarks = landmarks.where((element) => !element.isFavorite).toList();
-                      notFavoriteLandmarks.forEach((landmark) {
-                        addLandmark(landmark);
-                      });
+                      notFavoriteLandmarks.forEach(addLandmark);
                     }
                   },
                 ),
