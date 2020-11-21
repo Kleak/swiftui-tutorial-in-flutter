@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:landmarks/src/bloc/filtered_landmarks.dart';
 import 'package:landmarks/src/bloc/landmarks.dart';
-import 'package:landmarks/src/data/landmarks.dart';
+import 'package:landmarks/src/bloc/show_favorite.dart';
 import 'package:landmarks/src/views/landmark_detail.dart';
 import 'package:landmarks/src/views/landmarks.dart';
 
@@ -25,10 +25,14 @@ class _LandmarksAppState extends State<LandmarksApp> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider(create: (context) => ShowOnlyFavoriteCubit()),
         BlocProvider<LandmarksBloc>(
           create: (context) => LandmarksBloc(),
         ),
-        BlocProvider(create: (context) => FilteredLandmarksBloc(context.read<LandmarksBloc>())),
+        BlocProvider(
+          create: (context) =>
+              FilteredLandmarksBloc(context.read<ShowOnlyFavoriteCubit>(), context.read<LandmarksBloc>()),
+        ),
       ],
       child: CupertinoApp.router(
         title: 'Landmarks',
