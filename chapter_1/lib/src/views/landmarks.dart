@@ -2,7 +2,6 @@ import 'package:flouter/flouter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:landmarks/src/bloc/filtered_landmarks.dart';
-import 'package:landmarks/src/bloc/landmarks.dart';
 import 'package:landmarks/src/models/landmark.dart';
 import 'package:landmarks/src/widgets/landmark_row.dart';
 import 'package:landmarks/src/widgets/navigation_link.dart';
