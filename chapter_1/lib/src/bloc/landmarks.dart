@@ -21,7 +21,7 @@ class LandmarksBloc extends Bloc<LandmarkEvent, List<Landmark>> {
 
   @override
   Future<void> close() async {
-    await _onRemoveFavorite.close();
+    _onRemoveFavorite.close();
     return super.close();
   }
 
