@@ -7,6 +7,7 @@ version: 1.0.0+1
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
+  flutter: ">=1.22.0"
 
 dependencies:
   flutter:
@@ -24,6 +25,7 @@ dev_dependencies:
   freezed: ^0.12.2
   json_serializable: ^3.5.0
   build_runner: ^1.10.6
+  bloc_test: ^7.1.0
 
 flutter:
   uses-material-design: true
