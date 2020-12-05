@@ -11,67 +11,64 @@ part 'filtered_landmarks.freezed.dart';
 @freezed
 abstract class FilteredLandmarksEvent with _$FilteredLandmarksEvent {
   const factory FilteredLandmarksEvent.add(Landmark landmark) = _AddLandmarksEvent;
-  const factory FilteredLandmarksEvent.remove(Landmark landmark) = _RemoveLandmarksEvent;
+  const factory FilteredLandmarksEvent.remove(Landmark landmark) = _RemoveLandmarkEvent;
+  const factory FilteredLandmarksEvent.removes(List<Landmark> landmarks) = _RemoveLandmarksEvent;
   const factory FilteredLandmarksEvent.reset() = _ResetLandmarksEvent;
   const factory FilteredLandmarksEvent.updateState(List<Landmark> landmarks) = UpdateLandmarksEvent;
 }
 
 class FilteredLandmarksBloc extends Bloc<FilteredLandmarksEvent, List<Landmark>> {
-  final ShowOnlyFavoriteCubit _showFavoriteCubit;
-  final LandmarksBloc _landmarksBloc;
-  final _onRemoveFavorite = StreamController<Landmark>();
+  final Cubit<List<Landmark>> _landmarks;
+  final Cubit<bool> _showOnlyFavorite;
+  final Stream<Landmark> _removeLandmarkFromFavorite;
 
   StreamSubscription<Landmark> _onRemoveLandmarkFromFavorite;
   StreamSubscription<List<Landmark>> _onUpdateLandmarks;
   StreamSubscription<bool> _onShowOnlyFavorite;
 
-  FilteredLandmarksBloc(this._showFavoriteCubit, this._landmarksBloc) : super([..._landmarksBloc.state]) {
-    _onUpdateLandmarks = _landmarksBloc.listen((landmarks) => add(FilteredLandmarksEvent.updateState(landmarks)));
+  FilteredLandmarksBloc(this._showOnlyFavorite, this._landmarks, this._removeLandmarkFromFavorite)
+      : super(_landmarks.state) {
+    _onUpdateLandmarks = _landmarks.listen((landmarks) => add(FilteredLandmarksEvent.updateState(landmarks)));
 
-    _onRemoveLandmarkFromFavorite = _landmarksBloc.onRemoveFavorite.listen((landmark) {
-      if (_showFavoriteCubit.state) {
+    _onRemoveLandmarkFromFavorite = _removeLandmarkFromFavorite.listen((landmark) {
+      if (_showOnlyFavorite.state) {
         add(FilteredLandmarksEvent.remove(landmark));
       }
     });
 
-    _onShowOnlyFavorite = _showFavoriteCubit.listen((showOnlyFavorite) {
+    _onShowOnlyFavorite = _showOnlyFavorite.listen((showOnlyFavorite) {
+      print(_landmarks.state);
+      print(showOnlyFavorite);
       if (showOnlyFavorite) {
-        final notFavoriteLandmarks = _landmarksBloc.state.where((element) => !element.isFavorite).toList();
-        notFavoriteLandmarks.forEach((landmark) {
-          add(FilteredLandmarksEvent.remove(landmark));
-        });
+        final notFavoriteLandmarks = _landmarks.state.where((element) => !element.isFavorite).toList();
+        add(FilteredLandmarksEvent.removes(notFavoriteLandmarks));
       } else {
         add(FilteredLandmarksEvent.reset());
       }
     });
   }
 
-  Stream<Landmark> get onRemoveFavorite => _onRemoveFavorite.stream;
-
   @override
   Future<void> close() async {
     await _onShowOnlyFavorite.cancel();
     await _onUpdateLandmarks.cancel();
     await _onRemoveLandmarkFromFavorite.cancel();
-    await _onRemoveFavorite.close();
     return super.close();
   }
 
   @override
   Stream<List<Landmark>> mapEventToState(FilteredLandmarksEvent event) async* {
-    if (event is _RemoveLandmarksEvent) {
+    if (event is _RemoveLandmarkEvent) {
       yield state.where((element) => element.id != event.landmark.id).toList();
+    } else if (event is _RemoveLandmarksEvent) {
+      yield state.where((element) => !event.landmarks.contains(element)).toList();
     } else if (event is _ResetLandmarksEvent) {
-      yield [..._landmarksBloc.state];
+      yield [..._landmarks.state];
     } else if (event is _AddLandmarksEvent) {
-      final index = _landmarksBloc.state.indexWhere((landmark) => landmark.id == event.landmark.id);
+      final index = _landmarks.state.indexWhere((landmark) => landmark.id == event.landmark.id);
       yield [...state]..insert(state.length <= index ? state.length : index, event.landmark);
     } else if (event is UpdateLandmarksEvent) {
-      yield [
-        for (final currentLandmarks in state)
-          for (final newLandmarks in event.landmarks)
-            if (currentLandmarks.id == newLandmarks.id) newLandmarks
-      ];
+      yield [for (final newLandmarks in event.landmarks) newLandmarks];
     }
   }
 }

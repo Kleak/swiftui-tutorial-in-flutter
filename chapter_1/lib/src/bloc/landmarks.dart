@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:landmarks/src/data/landmarks.dart';
 import 'package:landmarks/src/models/landmark.dart';
 
 part 'landmarks.freezed.dart';
@@ -15,7 +14,7 @@ abstract class LandmarkEvent with _$LandmarkEvent {
 class LandmarksBloc extends Bloc<LandmarkEvent, List<Landmark>> {
   final _onRemoveFavorite = StreamController<Landmark>();
 
-  LandmarksBloc() : super([...landmarks]);
+  LandmarksBloc(List<Landmark> landmarks) : super([...landmarks]);
 
   Stream<Landmark> get onRemoveFavorite => _onRemoveFavorite.stream;
 

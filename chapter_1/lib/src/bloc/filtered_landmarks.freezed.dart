@@ -21,9 +21,16 @@ class _$FilteredLandmarksEventTearOff {
   }
 
 // ignore: unused_element
-  _RemoveLandmarksEvent remove(Landmark landmark) {
-    return _RemoveLandmarksEvent(
+  _RemoveLandmarkEvent remove(Landmark landmark) {
+    return _RemoveLandmarkEvent(
       landmark,
+    );
+  }
+
+// ignore: unused_element
+  _RemoveLandmarksEvent removes(List<Landmark> landmarks) {
+    return _RemoveLandmarksEvent(
+      landmarks,
     );
   }
 
@@ -50,6 +57,7 @@ mixin _$FilteredLandmarksEvent {
   Result when<Result extends Object>({
     @required Result add(Landmark landmark),
     @required Result remove(Landmark landmark),
+    @required Result removes(List<Landmark> landmarks),
     @required Result reset(),
     @required Result updateState(List<Landmark> landmarks),
   });
@@ -57,6 +65,7 @@ mixin _$FilteredLandmarksEvent {
   Result maybeWhen<Result extends Object>({
     Result add(Landmark landmark),
     Result remove(Landmark landmark),
+    Result removes(List<Landmark> landmarks),
     Result reset(),
     Result updateState(List<Landmark> landmarks),
     @required Result orElse(),
@@ -64,14 +73,16 @@ mixin _$FilteredLandmarksEvent {
   @optionalTypeArgs
   Result map<Result extends Object>({
     @required Result add(_AddLandmarksEvent value),
-    @required Result remove(_RemoveLandmarksEvent value),
+    @required Result remove(_RemoveLandmarkEvent value),
+    @required Result removes(_RemoveLandmarksEvent value),
     @required Result reset(_ResetLandmarksEvent value),
     @required Result updateState(UpdateLandmarksEvent value),
   });
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
     Result add(_AddLandmarksEvent value),
-    Result remove(_RemoveLandmarksEvent value),
+    Result remove(_RemoveLandmarkEvent value),
+    Result removes(_RemoveLandmarksEvent value),
     Result reset(_ResetLandmarksEvent value),
     Result updateState(UpdateLandmarksEvent value),
     @required Result orElse(),
@@ -170,11 +181,13 @@ class _$_AddLandmarksEvent implements _AddLandmarksEvent {
   Result when<Result extends Object>({
     @required Result add(Landmark landmark),
     @required Result remove(Landmark landmark),
+    @required Result removes(List<Landmark> landmarks),
     @required Result reset(),
     @required Result updateState(List<Landmark> landmarks),
   }) {
     assert(add != null);
     assert(remove != null);
+    assert(removes != null);
     assert(reset != null);
     assert(updateState != null);
     return add(landmark);
@@ -185,6 +198,7 @@ class _$_AddLandmarksEvent implements _AddLandmarksEvent {
   Result maybeWhen<Result extends Object>({
     Result add(Landmark landmark),
     Result remove(Landmark landmark),
+    Result removes(List<Landmark> landmarks),
     Result reset(),
     Result updateState(List<Landmark> landmarks),
     @required Result orElse(),
@@ -200,12 +214,14 @@ class _$_AddLandmarksEvent implements _AddLandmarksEvent {
   @optionalTypeArgs
   Result map<Result extends Object>({
     @required Result add(_AddLandmarksEvent value),
-    @required Result remove(_RemoveLandmarksEvent value),
+    @required Result remove(_RemoveLandmarkEvent value),
+    @required Result removes(_RemoveLandmarksEvent value),
     @required Result reset(_ResetLandmarksEvent value),
     @required Result updateState(UpdateLandmarksEvent value),
   }) {
     assert(add != null);
     assert(remove != null);
+    assert(removes != null);
     assert(reset != null);
     assert(updateState != null);
     return add(this);
@@ -215,7 +231,8 @@ class _$_AddLandmarksEvent implements _AddLandmarksEvent {
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
     Result add(_AddLandmarksEvent value),
-    Result remove(_RemoveLandmarksEvent value),
+    Result remove(_RemoveLandmarkEvent value),
+    Result removes(_RemoveLandmarksEvent value),
     Result reset(_ResetLandmarksEvent value),
     Result updateState(UpdateLandmarksEvent value),
     @required Result orElse(),
@@ -236,31 +253,31 @@ abstract class _AddLandmarksEvent implements FilteredLandmarksEvent {
 }
 
 /// @nodoc
-abstract class _$RemoveLandmarksEventCopyWith<$Res> {
-  factory _$RemoveLandmarksEventCopyWith(_RemoveLandmarksEvent value,
-          $Res Function(_RemoveLandmarksEvent) then) =
-      __$RemoveLandmarksEventCopyWithImpl<$Res>;
+abstract class _$RemoveLandmarkEventCopyWith<$Res> {
+  factory _$RemoveLandmarkEventCopyWith(_RemoveLandmarkEvent value,
+          $Res Function(_RemoveLandmarkEvent) then) =
+      __$RemoveLandmarkEventCopyWithImpl<$Res>;
   $Res call({Landmark landmark});
 
   $LandmarkCopyWith<$Res> get landmark;
 }
 
 /// @nodoc
-class __$RemoveLandmarksEventCopyWithImpl<$Res>
+class __$RemoveLandmarkEventCopyWithImpl<$Res>
     extends _$FilteredLandmarksEventCopyWithImpl<$Res>
-    implements _$RemoveLandmarksEventCopyWith<$Res> {
-  __$RemoveLandmarksEventCopyWithImpl(
-      _RemoveLandmarksEvent _value, $Res Function(_RemoveLandmarksEvent) _then)
-      : super(_value, (v) => _then(v as _RemoveLandmarksEvent));
+    implements _$RemoveLandmarkEventCopyWith<$Res> {
+  __$RemoveLandmarkEventCopyWithImpl(
+      _RemoveLandmarkEvent _value, $Res Function(_RemoveLandmarkEvent) _then)
+      : super(_value, (v) => _then(v as _RemoveLandmarkEvent));
 
   @override
-  _RemoveLandmarksEvent get _value => super._value as _RemoveLandmarksEvent;
+  _RemoveLandmarkEvent get _value => super._value as _RemoveLandmarkEvent;
 
   @override
   $Res call({
     Object landmark = freezed,
   }) {
-    return _then(_RemoveLandmarksEvent(
+    return _then(_RemoveLandmarkEvent(
       landmark == freezed ? _value.landmark : landmark as Landmark,
     ));
   }
@@ -277,8 +294,8 @@ class __$RemoveLandmarksEventCopyWithImpl<$Res>
 }
 
 /// @nodoc
-class _$_RemoveLandmarksEvent implements _RemoveLandmarksEvent {
-  const _$_RemoveLandmarksEvent(this.landmark) : assert(landmark != null);
+class _$_RemoveLandmarkEvent implements _RemoveLandmarkEvent {
+  const _$_RemoveLandmarkEvent(this.landmark) : assert(landmark != null);
 
   @override
   final Landmark landmark;
@@ -291,7 +308,7 @@ class _$_RemoveLandmarksEvent implements _RemoveLandmarksEvent {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other is _RemoveLandmarksEvent &&
+        (other is _RemoveLandmarkEvent &&
             (identical(other.landmark, landmark) ||
                 const DeepCollectionEquality()
                     .equals(other.landmark, landmark)));
@@ -302,8 +319,8 @@ class _$_RemoveLandmarksEvent implements _RemoveLandmarksEvent {
       runtimeType.hashCode ^ const DeepCollectionEquality().hash(landmark);
 
   @override
-  _$RemoveLandmarksEventCopyWith<_RemoveLandmarksEvent> get copyWith =>
-      __$RemoveLandmarksEventCopyWithImpl<_RemoveLandmarksEvent>(
+  _$RemoveLandmarkEventCopyWith<_RemoveLandmarkEvent> get copyWith =>
+      __$RemoveLandmarkEventCopyWithImpl<_RemoveLandmarkEvent>(
           this, _$identity);
 
   @override
@@ -311,11 +328,13 @@ class _$_RemoveLandmarksEvent implements _RemoveLandmarksEvent {
   Result when<Result extends Object>({
     @required Result add(Landmark landmark),
     @required Result remove(Landmark landmark),
+    @required Result removes(List<Landmark> landmarks),
     @required Result reset(),
     @required Result updateState(List<Landmark> landmarks),
   }) {
     assert(add != null);
     assert(remove != null);
+    assert(removes != null);
     assert(reset != null);
     assert(updateState != null);
     return remove(landmark);
@@ -326,6 +345,7 @@ class _$_RemoveLandmarksEvent implements _RemoveLandmarksEvent {
   Result maybeWhen<Result extends Object>({
     Result add(Landmark landmark),
     Result remove(Landmark landmark),
+    Result removes(List<Landmark> landmarks),
     Result reset(),
     Result updateState(List<Landmark> landmarks),
     @required Result orElse(),
@@ -341,12 +361,14 @@ class _$_RemoveLandmarksEvent implements _RemoveLandmarksEvent {
   @optionalTypeArgs
   Result map<Result extends Object>({
     @required Result add(_AddLandmarksEvent value),
-    @required Result remove(_RemoveLandmarksEvent value),
+    @required Result remove(_RemoveLandmarkEvent value),
+    @required Result removes(_RemoveLandmarksEvent value),
     @required Result reset(_ResetLandmarksEvent value),
     @required Result updateState(UpdateLandmarksEvent value),
   }) {
     assert(add != null);
     assert(remove != null);
+    assert(removes != null);
     assert(reset != null);
     assert(updateState != null);
     return remove(this);
@@ -356,7 +378,8 @@ class _$_RemoveLandmarksEvent implements _RemoveLandmarksEvent {
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
     Result add(_AddLandmarksEvent value),
-    Result remove(_RemoveLandmarksEvent value),
+    Result remove(_RemoveLandmarkEvent value),
+    Result removes(_RemoveLandmarksEvent value),
     Result reset(_ResetLandmarksEvent value),
     Result updateState(UpdateLandmarksEvent value),
     @required Result orElse(),
@@ -369,11 +392,147 @@ class _$_RemoveLandmarksEvent implements _RemoveLandmarksEvent {
   }
 }
 
-abstract class _RemoveLandmarksEvent implements FilteredLandmarksEvent {
-  const factory _RemoveLandmarksEvent(Landmark landmark) =
-      _$_RemoveLandmarksEvent;
+abstract class _RemoveLandmarkEvent implements FilteredLandmarksEvent {
+  const factory _RemoveLandmarkEvent(Landmark landmark) =
+      _$_RemoveLandmarkEvent;
 
   Landmark get landmark;
+  _$RemoveLandmarkEventCopyWith<_RemoveLandmarkEvent> get copyWith;
+}
+
+/// @nodoc
+abstract class _$RemoveLandmarksEventCopyWith<$Res> {
+  factory _$RemoveLandmarksEventCopyWith(_RemoveLandmarksEvent value,
+          $Res Function(_RemoveLandmarksEvent) then) =
+      __$RemoveLandmarksEventCopyWithImpl<$Res>;
+  $Res call({List<Landmark> landmarks});
+}
+
+/// @nodoc
+class __$RemoveLandmarksEventCopyWithImpl<$Res>
+    extends _$FilteredLandmarksEventCopyWithImpl<$Res>
+    implements _$RemoveLandmarksEventCopyWith<$Res> {
+  __$RemoveLandmarksEventCopyWithImpl(
+      _RemoveLandmarksEvent _value, $Res Function(_RemoveLandmarksEvent) _then)
+      : super(_value, (v) => _then(v as _RemoveLandmarksEvent));
+
+  @override
+  _RemoveLandmarksEvent get _value => super._value as _RemoveLandmarksEvent;
+
+  @override
+  $Res call({
+    Object landmarks = freezed,
+  }) {
+    return _then(_RemoveLandmarksEvent(
+      landmarks == freezed ? _value.landmarks : landmarks as List<Landmark>,
+    ));
+  }
+}
+
+/// @nodoc
+class _$_RemoveLandmarksEvent implements _RemoveLandmarksEvent {
+  const _$_RemoveLandmarksEvent(this.landmarks) : assert(landmarks != null);
+
+  @override
+  final List<Landmark> landmarks;
+
+  @override
+  String toString() {
+    return 'FilteredLandmarksEvent.removes(landmarks: $landmarks)';
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    return identical(this, other) ||
+        (other is _RemoveLandmarksEvent &&
+            (identical(other.landmarks, landmarks) ||
+                const DeepCollectionEquality()
+                    .equals(other.landmarks, landmarks)));
+  }
+
+  @override
+  int get hashCode =>
+      runtimeType.hashCode ^ const DeepCollectionEquality().hash(landmarks);
+
+  @override
+  _$RemoveLandmarksEventCopyWith<_RemoveLandmarksEvent> get copyWith =>
+      __$RemoveLandmarksEventCopyWithImpl<_RemoveLandmarksEvent>(
+          this, _$identity);
+
+  @override
+  @optionalTypeArgs
+  Result when<Result extends Object>({
+    @required Result add(Landmark landmark),
+    @required Result remove(Landmark landmark),
+    @required Result removes(List<Landmark> landmarks),
+    @required Result reset(),
+    @required Result updateState(List<Landmark> landmarks),
+  }) {
+    assert(add != null);
+    assert(remove != null);
+    assert(removes != null);
+    assert(reset != null);
+    assert(updateState != null);
+    return removes(landmarks);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeWhen<Result extends Object>({
+    Result add(Landmark landmark),
+    Result remove(Landmark landmark),
+    Result removes(List<Landmark> landmarks),
+    Result reset(),
+    Result updateState(List<Landmark> landmarks),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (removes != null) {
+      return removes(landmarks);
+    }
+    return orElse();
+  }
+
+  @override
+  @optionalTypeArgs
+  Result map<Result extends Object>({
+    @required Result add(_AddLandmarksEvent value),
+    @required Result remove(_RemoveLandmarkEvent value),
+    @required Result removes(_RemoveLandmarksEvent value),
+    @required Result reset(_ResetLandmarksEvent value),
+    @required Result updateState(UpdateLandmarksEvent value),
+  }) {
+    assert(add != null);
+    assert(remove != null);
+    assert(removes != null);
+    assert(reset != null);
+    assert(updateState != null);
+    return removes(this);
+  }
+
+  @override
+  @optionalTypeArgs
+  Result maybeMap<Result extends Object>({
+    Result add(_AddLandmarksEvent value),
+    Result remove(_RemoveLandmarkEvent value),
+    Result removes(_RemoveLandmarksEvent value),
+    Result reset(_ResetLandmarksEvent value),
+    Result updateState(UpdateLandmarksEvent value),
+    @required Result orElse(),
+  }) {
+    assert(orElse != null);
+    if (removes != null) {
+      return removes(this);
+    }
+    return orElse();
+  }
+}
+
+abstract class _RemoveLandmarksEvent implements FilteredLandmarksEvent {
+  const factory _RemoveLandmarksEvent(List<Landmark> landmarks) =
+      _$_RemoveLandmarksEvent;
+
+  List<Landmark> get landmarks;
   _$RemoveLandmarksEventCopyWith<_RemoveLandmarksEvent> get copyWith;
 }
 
@@ -418,11 +577,13 @@ class _$_ResetLandmarksEvent implements _ResetLandmarksEvent {
   Result when<Result extends Object>({
     @required Result add(Landmark landmark),
     @required Result remove(Landmark landmark),
+    @required Result removes(List<Landmark> landmarks),
     @required Result reset(),
     @required Result updateState(List<Landmark> landmarks),
   }) {
     assert(add != null);
     assert(remove != null);
+    assert(removes != null);
     assert(reset != null);
     assert(updateState != null);
     return reset();
@@ -433,6 +594,7 @@ class _$_ResetLandmarksEvent implements _ResetLandmarksEvent {
   Result maybeWhen<Result extends Object>({
     Result add(Landmark landmark),
     Result remove(Landmark landmark),
+    Result removes(List<Landmark> landmarks),
     Result reset(),
     Result updateState(List<Landmark> landmarks),
     @required Result orElse(),
@@ -448,12 +610,14 @@ class _$_ResetLandmarksEvent implements _ResetLandmarksEvent {
   @optionalTypeArgs
   Result map<Result extends Object>({
     @required Result add(_AddLandmarksEvent value),
-    @required Result remove(_RemoveLandmarksEvent value),
+    @required Result remove(_RemoveLandmarkEvent value),
+    @required Result removes(_RemoveLandmarksEvent value),
     @required Result reset(_ResetLandmarksEvent value),
     @required Result updateState(UpdateLandmarksEvent value),
   }) {
     assert(add != null);
     assert(remove != null);
+    assert(removes != null);
     assert(reset != null);
     assert(updateState != null);
     return reset(this);
@@ -463,7 +627,8 @@ class _$_ResetLandmarksEvent implements _ResetLandmarksEvent {
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
     Result add(_AddLandmarksEvent value),
-    Result remove(_RemoveLandmarksEvent value),
+    Result remove(_RemoveLandmarkEvent value),
+    Result removes(_RemoveLandmarksEvent value),
     Result reset(_ResetLandmarksEvent value),
     Result updateState(UpdateLandmarksEvent value),
     @required Result orElse(),
@@ -544,11 +709,13 @@ class _$UpdateLandmarksEvent implements UpdateLandmarksEvent {
   Result when<Result extends Object>({
     @required Result add(Landmark landmark),
     @required Result remove(Landmark landmark),
+    @required Result removes(List<Landmark> landmarks),
     @required Result reset(),
     @required Result updateState(List<Landmark> landmarks),
   }) {
     assert(add != null);
     assert(remove != null);
+    assert(removes != null);
     assert(reset != null);
     assert(updateState != null);
     return updateState(landmarks);
@@ -559,6 +726,7 @@ class _$UpdateLandmarksEvent implements UpdateLandmarksEvent {
   Result maybeWhen<Result extends Object>({
     Result add(Landmark landmark),
     Result remove(Landmark landmark),
+    Result removes(List<Landmark> landmarks),
     Result reset(),
     Result updateState(List<Landmark> landmarks),
     @required Result orElse(),
@@ -574,12 +742,14 @@ class _$UpdateLandmarksEvent implements UpdateLandmarksEvent {
   @optionalTypeArgs
   Result map<Result extends Object>({
     @required Result add(_AddLandmarksEvent value),
-    @required Result remove(_RemoveLandmarksEvent value),
+    @required Result remove(_RemoveLandmarkEvent value),
+    @required Result removes(_RemoveLandmarksEvent value),
     @required Result reset(_ResetLandmarksEvent value),
     @required Result updateState(UpdateLandmarksEvent value),
   }) {
     assert(add != null);
     assert(remove != null);
+    assert(removes != null);
     assert(reset != null);
     assert(updateState != null);
     return updateState(this);
@@ -589,7 +759,8 @@ class _$UpdateLandmarksEvent implements UpdateLandmarksEvent {
   @optionalTypeArgs
   Result maybeMap<Result extends Object>({
     Result add(_AddLandmarksEvent value),
-    Result remove(_RemoveLandmarksEvent value),
+    Result remove(_RemoveLandmarkEvent value),
+    Result removes(_RemoveLandmarksEvent value),
     Result reset(_ResetLandmarksEvent value),
     Result updateState(UpdateLandmarksEvent value),
     @required Result orElse(),
