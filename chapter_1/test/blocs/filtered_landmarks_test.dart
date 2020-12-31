@@ -41,5 +41,19 @@ void main() {
         landmarks.where((element) => element.isFavorite).toList(),
       ],
     );
+
+    blocTest<FilteredLandmarksBloc, List<Landmark>>(
+      'add landmark to favorite',
+      build: () {
+        return FilteredLandmarksBloc(landmarksBloc, showOnlyFavorite);
+      },
+      act: (bloc) {
+        landmarksBloc.add(LandmarkEvent.toggleFavorite(landmarks.elementAt(1)));
+      },
+      expect: [
+        landmarks
+          ..replaceRange(1, 2, [landmarks.elementAt(1).copyWith(isFavorite: !landmarks.elementAt(1).isFavorite)]),
+      ],
+    );
   });
 }
