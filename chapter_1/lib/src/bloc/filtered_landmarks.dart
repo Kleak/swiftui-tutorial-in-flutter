@@ -2,8 +2,6 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:landmarks/src/bloc/landmarks.dart';
-import 'package:landmarks/src/bloc/show_favorite.dart';
 import 'package:landmarks/src/models/landmark.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -15,18 +13,19 @@ abstract class FilteredLandmarksEvent with _$FilteredLandmarksEvent {
 }
 
 class FilteredLandmarksBloc extends Bloc<FilteredLandmarksEvent, List<Landmark>> {
-  final LandmarksBloc _landmarks;
-  final ShowOnlyFavoriteCubit _showOnlyFavorite;
+  final Cubit<List<Landmark>> landmarks;
+  final Cubit<bool> showOnlyFavorite;
 
   StreamSubscription<List<Landmark>> _filteredLandmarksSubscription;
 
-  FilteredLandmarksBloc(this._landmarks, this._showOnlyFavorite)
-      : super(_landmarks.state.where((element) => !_showOnlyFavorite.state ? true : element.isFavorite).toList()) {
+  FilteredLandmarksBloc(this.landmarks, this.showOnlyFavorite)
+      : super(landmarks.state.where((element) => !showOnlyFavorite.state ? true : element.isFavorite).toList()) {
     _filteredLandmarksSubscription = Rx.combineLatest2<List<Landmark>, bool, List<Landmark>>(
-            Stream.fromIterable([_landmarks.state]).concatWith([_landmarks]) ,
-            Stream.fromIterable([_showOnlyFavorite.state]).concatWith([_showOnlyFavorite]) ,
+            Stream.fromIterable([landmarks.state]).concatWith([landmarks]),
+            showOnlyFavorite,
             (landmarks, showOnlyFavorite) =>
                 landmarks.where((element) => !showOnlyFavorite ? true : element.isFavorite).toList())
+        .doOnData(print)
         .listen((event) => add(FilteredLandmarksEvent.updateState(event)));
   }
 

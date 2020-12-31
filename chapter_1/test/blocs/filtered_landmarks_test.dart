@@ -38,9 +38,7 @@ void main() {
         showOnlyFavorite.toggle();
       },
       expect: [
-        [
-          ...landmarks.where((element) => element.isFavorite),
-        ]
+        landmarks.where((element) => element.isFavorite).toList(),
       ],
     );
   });
