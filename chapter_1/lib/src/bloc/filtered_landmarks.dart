@@ -25,7 +25,6 @@ class FilteredLandmarksBloc extends Bloc<FilteredLandmarksEvent, List<Landmark>>
             showOnlyFavorite,
             (landmarks, showOnlyFavorite) =>
                 landmarks.where((element) => !showOnlyFavorite ? true : element.isFavorite).toList())
-        .doOnData(print)
         .listen((event) => add(FilteredLandmarksEvent.updateState(event)));
   }
 
