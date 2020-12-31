@@ -32,9 +32,8 @@ class _LandmarksAppState extends State<LandmarksApp> {
         ),
         BlocProvider(
           create: (context) => FilteredLandmarksBloc(
-            context.read<ShowOnlyFavoriteCubit>(),
             context.read<LandmarksBloc>(),
-            context.read<LandmarksBloc>().onRemoveFavorite,
+            context.read<ShowOnlyFavoriteCubit>(),
           ),
         ),
       ],

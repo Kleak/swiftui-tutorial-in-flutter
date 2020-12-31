@@ -24,7 +24,7 @@ void main() {
     blocTest<FilteredLandmarksBloc, List<Landmark>>(
       'emit nothing when created',
       build: () {
-        return FilteredLandmarksBloc(showOnlyFavorite, landmarksBloc, landmarksBloc.onRemoveFavorite);
+        return FilteredLandmarksBloc(landmarksBloc, showOnlyFavorite);
       },
       expect: [],
     );
@@ -32,7 +32,7 @@ void main() {
     blocTest<FilteredLandmarksBloc, List<Landmark>>(
       'toggle favorite',
       build: () {
-        return FilteredLandmarksBloc(showOnlyFavorite, landmarksBloc, landmarksBloc.onRemoveFavorite);
+        return FilteredLandmarksBloc(landmarksBloc, showOnlyFavorite);
       },
       act: (bloc) {
         showOnlyFavorite.toggle();

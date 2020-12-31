@@ -24,7 +24,8 @@ class Landmarks extends StatelessWidget {
         },
         body: Builder(
           builder: (context) {
-            return LandmarksBody(landmarks: context.select((FilteredLandmarksBloc bloc) => bloc.state));
+            return LandmarksBody(
+                landmarks: context.select<FilteredLandmarksBloc, List<Landmark>>((bloc) => bloc.state));
           },
         ),
       ),

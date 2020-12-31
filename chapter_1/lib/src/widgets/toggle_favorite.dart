@@ -5,7 +5,7 @@ import 'package:landmarks/src/bloc/show_favorite.dart';
 class ToggleFavorite extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final showOnlyFavorite = context.select((ShowOnlyFavoriteCubit cubit) => cubit.state);
+    final showOnlyFavorite = context.select<ShowOnlyFavoriteCubit, bool>((cubit) => cubit.state);
     return CupertinoSwitch(
       value: showOnlyFavorite,
       onChanged: (newValue) {

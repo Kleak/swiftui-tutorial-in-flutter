@@ -12,28 +12,15 @@ abstract class LandmarkEvent with _$LandmarkEvent {
 }
 
 class LandmarksBloc extends Bloc<LandmarkEvent, List<Landmark>> {
-  final _onRemoveFavorite = StreamController<Landmark>();
-
   LandmarksBloc(List<Landmark> landmarks) : super([...landmarks]);
-
-  Stream<Landmark> get onRemoveFavorite => _onRemoveFavorite.stream;
-
-  @override
-  Future<void> close() async {
-    _onRemoveFavorite.close();
-    return super.close();
-  }
 
   @override
   Stream<List<Landmark>> mapEventToState(LandmarkEvent event) async* {
     if (event is ToggleFavoriteLandmarkEvent) {
       yield [
         for (final l in state)
-          if (l == event.landmark) l.copyWith(isFavorite: !l.isFavorite) else l
+          if (l.id == event.landmark.id) l.copyWith(isFavorite: !l.isFavorite) else l
       ];
-      if (event.landmark.isFavorite) {
-        _onRemoveFavorite.add(event.landmark);
-      }
     }
   }
 }
