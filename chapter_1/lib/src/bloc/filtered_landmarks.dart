@@ -23,19 +23,12 @@ class FilteredLandmarksBloc extends Bloc<FilteredLandmarksEvent, List<Landmark>>
   FilteredLandmarksBloc(this.landmarksBloc, this.showOnlyFavoriteCubit)
       : super(
             landmarksBloc.state.where((element) => !showOnlyFavoriteCubit.state ? true : element.isFavorite).toList()) {
-    showOnlyFavoriteCubit.startWith(showOnlyFavoriteCubit.state).listen(print);
     _filteredLandmarksSubscription = Rx.combineLatest2<List<Landmark>, bool, List<Landmark>>(
             landmarksBloc.startWith(landmarksBloc.state),
             showOnlyFavoriteCubit.startWith(showOnlyFavoriteCubit.state),
             (landmarks, showOnlyFavorite) =>
                 landmarks.where((element) => !showOnlyFavorite ? true : element.isFavorite).toList())
-        .doOnData((event) {
-          print('before skip $event');
-        })
         .skip(1)
-        .doOnData((event) {
-          print('after skip $event');
-        })
         .listen((event) => add(FilteredLandmarksEvent.updateState(event)));
   }
 
