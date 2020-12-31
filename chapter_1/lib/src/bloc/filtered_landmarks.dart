@@ -23,8 +23,8 @@ class FilteredLandmarksBloc extends Bloc<FilteredLandmarksEvent, List<Landmark>>
   FilteredLandmarksBloc(this._landmarks, this._showOnlyFavorite)
       : super(_landmarks.state.where((element) => !_showOnlyFavorite.state ? true : element.isFavorite).toList()) {
     _filteredLandmarksSubscription = Rx.combineLatest2<List<Landmark>, bool, List<Landmark>>(
-            _landmarks,
-            _showOnlyFavorite,
+            Stream.fromIterable([_landmarks.state]).concatWith([_landmarks]) ,
+            Stream.fromIterable([_showOnlyFavorite.state]).concatWith([_showOnlyFavorite]) ,
             (landmarks, showOnlyFavorite) =>
                 landmarks.where((element) => !showOnlyFavorite ? true : element.isFavorite).toList())
         .listen((event) => add(FilteredLandmarksEvent.updateState(event)));
